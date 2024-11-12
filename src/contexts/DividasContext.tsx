@@ -11,6 +11,7 @@ export interface Divida {
 export interface DividasContextType {
   dividas: Divida[];
   adicionarDivida: (divida: Divida) => void;
+  removerDivida: (index: number) => void;
   calcularTotalDevido: () => number;
   calcularTotalAReceber: () => number;
 }
@@ -25,16 +26,24 @@ interface DividasProviderProps {
 export const DividasProvider: React.FC<DividasProviderProps> = ({ children }) => {
   const [dividas, setDividas] = useState<Divida[]>([]);
 
+  // Função para adicionar uma nova dívida
   const adicionarDivida = (divida: Divida) => {
     setDividas((prevDividas) => [...prevDividas, divida]);
   };
 
+  // Função para remover uma dívida
+  const removerDivida = (index: number) => {
+    setDividas((prevDividas) => prevDividas.filter((_, i) => i !== index));
+  };
+
+  // Função para calcular o total das dívidas a pagar
   const calcularTotalDevido = (): number => {
     return dividas
       .filter((divida) => divida.tipo === 'a pagar')
       .reduce((total, divida) => total + parseFloat(divida.valor), 0);
   };
 
+  // Função para calcular o total das dívidas a receber
   const calcularTotalAReceber = (): number => {
     return dividas
       .filter((divida) => divida.tipo === 'a receber')
@@ -42,7 +51,7 @@ export const DividasProvider: React.FC<DividasProviderProps> = ({ children }) =>
   };
 
   return (
-    <DividasContext.Provider value={{ dividas, adicionarDivida, calcularTotalDevido, calcularTotalAReceber }}>
+    <DividasContext.Provider value={{ dividas, adicionarDivida, removerDivida, calcularTotalDevido, calcularTotalAReceber }}>
       {children}
     </DividasContext.Provider>
   );

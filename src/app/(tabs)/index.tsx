@@ -1,8 +1,8 @@
-import { useDividas } from '@/hooks/useDividas';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Modal, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, Modal, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useDividas } from '@/hooks/useDividas'; // Hook de dívidas
 
-const HomeScreen: React.FC = () => {
+const HomeScreen: React.FC = ({  }) => {
   const { dividas, adicionarDivida, calcularTotalDevido, calcularTotalAReceber } = useDividas();
   const [modalVisible, setModalVisible] = useState(false);
   const [valor, setValor] = useState('');
@@ -43,6 +43,7 @@ const HomeScreen: React.FC = () => {
         <Text style={styles.buttonText}>Registrar Dívida</Text>
       </TouchableOpacity>
 
+      
       {/* Modal para adicionar uma nova dívida */}
       <Modal
         animationType="slide"
@@ -53,7 +54,7 @@ const HomeScreen: React.FC = () => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Adicionar Nova Dívida</Text>
-            
+
             {/* Campo para o valor da dívida */}
             <TextInput
               style={styles.input}
@@ -62,7 +63,7 @@ const HomeScreen: React.FC = () => {
               value={valor}
               onChangeText={setValor}
             />
-            
+
             {/* Campo para a descrição da dívida */}
             <TextInput
               style={[styles.input, { height: 100 }]} // Aumenta a altura para a descrição
@@ -71,7 +72,7 @@ const HomeScreen: React.FC = () => {
               onChangeText={setDescricao}
               multiline={true} // Permite múltiplas linhas para a descrição
             />
-            
+
             {/* Campo para escolher o tipo de dívida */}
             <View style={styles.tipoContainer}>
               <TouchableOpacity
@@ -87,7 +88,7 @@ const HomeScreen: React.FC = () => {
                 <Text style={styles.tipoButtonText}>A Receber</Text>
               </TouchableOpacity>
             </View>
-            
+
             <View style={styles.modalButtons}>
               <TouchableOpacity
                 style={[styles.button, styles.cancelButton]}
@@ -105,22 +106,6 @@ const HomeScreen: React.FC = () => {
           </View>
         </View>
       </Modal>
-
-      {/* Exibindo a lista de dívidas */}
-      <View style={styles.dividasList}>
-        <Text style={styles.listTitle}>Dívidas Registradas:</Text>
-        {dividas.length === 0 ? (
-          <Text style={styles.emptyText}>Nenhuma dívida registrada.</Text>
-        ) : (
-          dividas.map((item, index) => (
-            <View key={index} style={styles.dividaItem}>
-              <Text style={styles.dividaText}>Valor: R$ {item.valor}</Text>
-              <Text style={styles.dividaText}>Descrição: {item.descricao}</Text>
-              <Text style={styles.dividaText}>Tipo: {item.tipo === 'a pagar' ? 'A Pagar' : 'A Receber'}</Text>
-            </View>
-          ))
-        )}
-      </View>
     </View>
   );
 };
@@ -225,28 +210,6 @@ const styles = StyleSheet.create({
   selectedButton: {
     backgroundColor: '#4CAF50',
   },
-  
-  dividasList: {
-    marginTop: 20,
-    width: '100%',
-    paddingHorizontal: 20,
-  },
-  listTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  dividaItem: {
-    marginBottom: 15,
-  },
-  dividaText: {
-    fontSize: 16,
-  },
-  emptyText: {
-    fontStyle: 'italic',
-    color: '#777',
-  },
 });
 
-
-export default HomeScreen
+export default HomeScreen;
